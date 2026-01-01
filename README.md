@@ -24,17 +24,20 @@ A modern, feature-rich expense tracking application built with React, TypeScript
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/Manoo07/Expense-Tracker.git
 cd expense-tracker-dev
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -93,6 +96,7 @@ expense-tracker-dev/
 ## Google Sheets Integration
 
 The app supports connecting to Google Sheets to store and sync your expense data. Use the Sheet Connector component to:
+
 - Connect to your Google Sheet
 - Automatically sync expenses
 - Refresh data on demand
@@ -130,6 +134,7 @@ This project is open source and available under the MIT License.
 ## Author
 
 **Manoo07**
+
 - GitHub: [@Manoo07](https://github.com/Manoo07)
 
 ## Acknowledgments
@@ -137,4 +142,3 @@ This project is open source and available under the MIT License.
 - Built with [shadcn/ui](https://ui.shadcn.com/)
 - Icons by [Lucide](https://lucide.dev/)
 - Charts powered by [Recharts](https://recharts.org/)
-
