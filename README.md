@@ -1,73 +1,140 @@
-# Welcome to your Lovable project
+# Expense Tracker
 
-## Project info
+A modern, feature-rich expense tracking application built with React, TypeScript, and Tailwind CSS. Track your expenses, visualize spending patterns, and manage your finances with ease.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Features
 
-## How can I edit this code?
+- **Dashboard Analytics**: Comprehensive overview of your spending with summary cards showing total expenses, average spending, and transaction counts
+- **Visual Charts**: Interactive charts displaying spending by category and payment method
+- **Spending Trends**: Track your spending patterns over time with detailed trend analysis
+- **Advanced Filtering**: Filter expenses by category, payment method, and date range
+- **Responsive Design**: Fully responsive interface that works seamlessly on desktop, tablet, and mobile devices
+- **Dark Mode**: Built-in theme toggle for comfortable viewing in any lighting condition
+- **Expense Management**: Add, edit, and delete expenses with a user-friendly interface
+- **Google Sheets Integration**: Connect to Google Sheets to sync and manage your expense data
+- **Mock Data**: Includes 150 sample expenses for demo purposes when not connected to a sheet
 
-There are several ways of editing your application.
+## Getting Started
 
-**Use Lovable**
+### Prerequisites
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- Node.js (v18 or higher)
+- npm or yarn
 
-Changes made via Lovable will be committed automatically to this repo.
+### Installation
 
-**Use your preferred IDE**
+1. Clone the repository:
+```bash
+git clone https://github.com/Manoo07/Expense-Tracker.git
+cd expense-tracker-dev
+```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+2. Install dependencies:
+```bash
+npm install
+```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+3. Start the development server:
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The application will open at `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Available Scripts
 
-**Use GitHub Codespaces**
+- `npm run dev` - Start the development server
+- `npm run build` - Build for production
+- `npm run build:dev` - Build for development
+- `npm run lint` - Run ESLint
+- `npm run preview` - Preview production build locally
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Tech Stack
 
-## What technologies are used for this project?
+- **Frontend Framework**: React 18
+- **Build Tool**: Vite
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui + Radix UI
+- **Charts**: Recharts
+- **Form Handling**: React Hook Form + Zod
+- **Date Management**: date-fns
+- **Routing**: React Router v6
+- **State Management**: React Query (TanStack Query)
+- **Notifications**: Sonner
 
-This project is built with:
+## Project Structure
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```
+expense-tracker-dev/
+├── src/
+│   ├── components/          # Reusable components
+│   │   ├── Dashboard/       # Dashboard-specific components
+│   │   └── ui/             # shadcn/ui components
+│   ├── hooks/              # Custom React hooks
+│   ├── lib/                # Utility functions and helpers
+│   ├── pages/              # Page components
+│   ├── types/              # TypeScript type definitions
+│   ├── App.tsx             # Main app component
+│   └── main.tsx            # App entry point
+├── public/                 # Static assets
+└── ...config files
+```
 
-## How can I deploy this project?
+## Key Components
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+- **Dashboard**: Main expense tracking interface with filtering and analytics
+- **ExpenseTable**: Data table with sorting and management capabilities
+- **Charts**: Category distribution, payment method breakdown, and spending trends
+- **FilterPanel**: Advanced filtering options for expenses
+- **SheetConnector**: Google Sheets integration component
+- **ThemeToggle**: Dark/light mode switcher
 
-## Can I connect a custom domain to my Lovable project?
+## Google Sheets Integration
 
-Yes, you can!
+The app supports connecting to Google Sheets to store and sync your expense data. Use the Sheet Connector component to:
+- Connect to your Google Sheet
+- Automatically sync expenses
+- Refresh data on demand
+- Disconnect when needed
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Expense Categories
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- Food & Dining
+- Transportation
+- Shopping
+- Entertainment
+- Bills & Utilities
+- Healthcare
+- Travel
+- Education
+- Other
+
+## Payment Methods
+
+- Cash
+- Credit Card
+- Debit Card
+- UPI
+- Net Banking
+- Other
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is open source and available under the MIT License.
+
+## Author
+
+**Manoo07**
+- GitHub: [@Manoo07](https://github.com/Manoo07)
+
+## Acknowledgments
+
+- Built with [shadcn/ui](https://ui.shadcn.com/)
+- Icons by [Lucide](https://lucide.dev/)
+- Charts powered by [Recharts](https://recharts.org/)
+
