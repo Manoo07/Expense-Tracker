@@ -1,14 +1,18 @@
 import { useState, useCallback, useEffect } from "react";
 import { Expense } from "@/types/expense";
-import { fetchGoogleSheetData } from "@/lib/googleSheets";
+import { fetchGoogleSheetData, writeExpenseToSheet } from "@/lib/googleSheets";
 import { useToast } from "@/hooks/use-toast";
 
 const STORAGE_KEY = "expense-tracker-sheet-url";
+const WEBHOOK_KEY = "expense-tracker-webhook-url";
 const REFRESH_INTERVAL = 60000; // 1 minute auto-refresh
 
 export function useGoogleSheet() {
   const [sheetUrl, setSheetUrl] = useState<string | null>(() => {
     return localStorage.getItem(STORAGE_KEY);
+  });
+  const [webhookUrl, setWebhookUrl] = useState<string | null>(() => {
+    return localStorage.getItem(WEBHOOK_KEY);
   });
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,18 +55,25 @@ export function useGoogleSheet() {
     }
   }, [toast]);
 
-  const connect = useCallback(async (url: string) => {
+  const connect = useCallback(async (url: string, webhook?: string) => {
     await fetchData(url);
     setSheetUrl(url);
     localStorage.setItem(STORAGE_KEY, url);
+    
+    if (webhook) {
+      setWebhookUrl(webhook);
+      localStorage.setItem(WEBHOOK_KEY, webhook);
+    }
   }, [fetchData]);
 
   const disconnect = useCallback(() => {
     setSheetUrl(null);
+    setWebhookUrl(null);
     setExpenses([]);
     setError(null);
     setLastUpdated(null);
     localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(WEBHOOK_KEY);
     
     toast({
       title: "Disconnected",
@@ -74,6 +85,49 @@ export function useGoogleSheet() {
     if (!sheetUrl) return;
     await fetchData(sheetUrl);
   }, [sheetUrl, fetchData]);
+
+  const addExpense = useCallback(async (expense: Omit<Expense, 'id'>) => {
+    if (!webhookUrl) {
+      toast({
+        title: "Webhook not configured",
+        description: "Please configure the webhook URL to add expenses to the sheet",
+        variant: "destructive"
+      });
+      return false;
+    }
+
+    try {
+      await writeExpenseToSheet(webhookUrl, expense);
+      
+      // Add to local state optimistically
+      const newExpense: Expense = {
+        ...expense,
+        id: `exp-${Date.now()}`
+      };
+      setExpenses(prev => [newExpense, ...prev]);
+      
+      toast({
+        title: "Expense added",
+        description: "Successfully added to Google Sheet"
+      });
+
+      // Refresh after a short delay to get the actual sheet data
+      setTimeout(() => {
+        if (sheetUrl) {
+          fetchData(sheetUrl, false);
+        }
+      }, 2000);
+
+      return true;
+    } catch (error) {
+      toast({
+        title: "Failed to add expense",
+        description: "Could not write to Google Sheet",
+        variant: "destructive"
+      });
+      return false;
+    }
+  }, [webhookUrl, sheetUrl, toast, fetchData]);
 
   // Auto-load on mount if URL is saved
   useEffect(() => {
@@ -99,6 +153,7 @@ export function useGoogleSheet() {
 
   return {
     sheetUrl,
+    webhookUrl,
     expenses,
     isConnected: !!sheetUrl,
     isLoading,
@@ -107,6 +162,7 @@ export function useGoogleSheet() {
     connect,
     disconnect,
     refresh,
+    addExpense,
     setExpenses,
   };
 }

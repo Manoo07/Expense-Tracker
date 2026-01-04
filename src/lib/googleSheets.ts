@@ -207,3 +207,37 @@ export async function fetchGoogleSheetData(sheetUrl: string): Promise<Expense[]>
   
   return parseCsvToExpenses(csvText);
 }
+
+export async function writeExpenseToSheet(
+  webhookUrl: string,
+  expense: Omit<Expense, 'id'>
+): Promise<void> {
+  try {
+    const payload = {
+      timestamp: expense.timestamp.toISOString(),
+      dateOfExpense: expense.dateOfExpense.toISOString(),
+      category: expense.category,
+      amount: expense.amount,
+      description: expense.description,
+      paymentMethod: expense.paymentMethod,
+      receiptRequired: expense.receiptRequired ? "Yes" : "No",
+      importance: expense.importance
+    };
+
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      mode: 'no-cors', // Important for Google Apps Script
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+
+    // Note: no-cors means we can't read the response, but the request will complete
+    // The webhook should return success if it worked
+    
+  } catch (error) {
+    console.error('Failed to write to sheet:', error);
+    throw new Error('Failed to write expense to Google Sheet');
+  }
+}

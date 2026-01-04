@@ -95,12 +95,23 @@ expense-tracker-dev/
 
 ## Google Sheets Integration
 
-The app supports connecting to Google Sheets to store and sync your expense data. Use the Sheet Connector component to:
+The app supports full two-way integration with Google Sheets:
 
-- Connect to your Google Sheet
-- Automatically sync expenses
-- Refresh data on demand
-- Disconnect when needed
+### Reading Expenses
+- Connect to any public Google Sheet
+- Automatically sync and display expenses
+- Auto-refresh every 60 seconds
+- Manual refresh on demand
+
+### Writing Expenses
+- Add new expenses directly to your Google Sheet
+- Uses Google Apps Script webhook for real-time updates
+- Automatic sync after adding expenses
+
+**Setup Instructions:** See [GOOGLE_SHEET_SETUP.md](./GOOGLE_SHEET_SETUP.md) for detailed setup guide including:
+- How to format your Google Sheet
+- Setting up the Apps Script webhook
+- Troubleshooting tips
 
 ## Expense Categories
 

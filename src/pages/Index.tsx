@@ -28,6 +28,7 @@ const Index = () => {
     connect,
     disconnect,
     refresh,
+    addExpense,
     setExpenses: setSheetExpenses,
   } = useGoogleSheet();
 
@@ -67,7 +68,7 @@ const Index = () => {
   const paymentData = useMemo(() => getPaymentMethodData(filteredExpenses), [filteredExpenses]);
   const trendData = useMemo(() => getTrendData(filteredExpenses, 30), [filteredExpenses]);
 
-  const handleAddExpense = (formData: ExpenseFormData) => {
+  const handleAddExpense = async (formData: ExpenseFormData) => {
     const newExpense: Expense = {
       id: `exp-${Date.now()}`,
       timestamp: new Date(),
@@ -75,8 +76,15 @@ const Index = () => {
     };
     
     if (isConnected) {
-      // Add to sheet expenses (local only for now)
-      setSheetExpenses((prev) => [newExpense, ...prev]);
+      // Try to write to Google Sheet
+      const success = await addExpense(newExpense);
+      if (!success) {
+        // If webhook fails, still add locally
+        setSheetExpenses((prev) => [newExpense, ...prev]);
+      }
+    } else {
+      // In demo mode, just show a message
+      console.log("Demo mode: Expense not saved", newExpense);
     }
   };
 

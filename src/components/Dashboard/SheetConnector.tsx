@@ -6,7 +6,7 @@ import { parseGoogleSheetUrl } from "@/lib/googleSheets";
 import { cn } from "@/lib/utils";
 
 interface SheetConnectorProps {
-  onConnect: (url: string) => Promise<void>;
+  onConnect: (url: string, webhook?: string) => Promise<void>;
   onDisconnect: () => void;
   onRefresh: () => Promise<void>;
   isConnected: boolean;
@@ -27,6 +27,7 @@ export function SheetConnector({
   lastUpdated,
 }: SheetConnectorProps) {
   const [sheetUrl, setSheetUrl] = useState("");
+  const [webhookUrl, setWebhookUrl] = useState("");
   const [isValidUrl, setIsValidUrl] = useState(false);
 
   const handleUrlChange = (value: string) => {
@@ -37,7 +38,7 @@ export function SheetConnector({
 
   const handleConnect = async () => {
     if (!isValidUrl) return;
-    await onConnect(sheetUrl);
+    await onConnect(sheetUrl, webhookUrl || undefined);
   };
 
   if (isConnected) {
@@ -89,7 +90,7 @@ export function SheetConnector({
         <div>
           <h3 className="font-medium text-sm text-foreground">Connect Google Sheet</h3>
           <p className="text-xs text-muted-foreground">
-            Paste your public sheet URL
+            Paste your public sheet URL and optional webhook URL
           </p>
         </div>
       </div>
@@ -116,6 +117,15 @@ export function SheetConnector({
               "Connect"
             )}
           </Button>
+        </div>
+
+        <div className="flex gap-2">
+          <Input
+            placeholder="Webhook URL (optional, for adding expenses)"
+            value={webhookUrl}
+            onChange={(e) => setWebhookUrl(e.target.value)}
+            className="flex-1 bg-background border-border font-mono text-xs h-8"
+          />
         </div>
 
         {sheetUrl && !isValidUrl && (
